@@ -10,8 +10,7 @@
 
     <declare-styleable name="ViewPagerIndicator">
 
-        <attr name="icon">
-
+        <attr name="iconxv" format="reference">
         </attr>
     </declare-styleable>
 
