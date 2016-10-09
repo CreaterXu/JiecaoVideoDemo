@@ -20,8 +20,8 @@
 
         <com.creater.widgt.ViewPagerIndicator
             android:id="@+id/view_pager_indicator"
-            android:layout_below="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="200px"
+            android:layout_below="@+id/viewpager"/>
 
 </RelativeLayout>

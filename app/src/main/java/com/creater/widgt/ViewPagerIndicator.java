@@ -62,44 +62,77 @@ public class ViewPagerIndicator extends View implements PagerIndicator{
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         mCurrentPage=position;
         invalidate();
-        setVisibility(VISIBLE);
     }
 
     @Override
     public void onPageSelected(int position) {
-        Log.e("xv","chosen :"+position);
         mCurrentPage=position;
         invalidate();
-        setVisibility(GONE);
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
+//        if(state==ViewPager.SCROLL_STATE_DRAGGING){
+//            setVisibility(GONE);
+//        }
+//        setVisibility(GONE);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        float x=40,y=5;
+        super.onDraw(canvas);
+        canvas.drawColor(Color.BLACK);
+
+        int width=mWidth,height=mHeight, x=0,y=0, radius=0;
+        int count=mViewPager.getAdapter().getCount();
+
+        radius=height/4;
+        if(2*count*radius>=width/2){
+            radius=width/2/count/2;
+        }
+        x=width/2-count*radius+radius;
+        y=radius*2;
+        Log.e("xv","width:"+width+"  height:"+height+" x:"+x+" y:"+y);
         Paint paint=new Paint();
-        for (int i=0;i<mViewPager.getAdapter().getCount();i++){
+        for (int i=0;i<count;i++){
             if (i==mCurrentPage) {
                 paint.setColor(Color.RED);
-                canvas.drawCircle(x + i * 20, y, 10,paint);
+                canvas.drawCircle(x + i *2*radius, y, radius,paint);
             }
             else
             {
                 paint.setColor(Color.WHITE);
-                canvas.drawCircle(x + i * 20, y, 10,paint);
+                canvas.drawCircle(x + i*2*radius, y, radius,paint);
             }
         }
-        super.onDraw(canvas);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        mWidth=MeasureSpec.getSize(widthMeasureSpec);
+        mHeight=MeasureSpec.getSize(heightMeasureSpec);
+        int specWideMode=MeasureSpec.getMode(widthMeasureSpec);
+        int specHeighMode=MeasureSpec.getMode(heightMeasureSpec);
+        switch (specWideMode) {
+            case MeasureSpec.UNSPECIFIED:
+                Log.e("xv", "onMeasure: unspe");
+                break;
+            case MeasureSpec.AT_MOST:
+                Log.e("xv", "onMeasure: At_most");
+                break;
+            case MeasureSpec.EXACTLY:
+                Log.e("xv", "onMeasure: exactiy");
+                break;
+        }
+        Log.e("xv","width:"+mWidth+"height:"+mHeight+"  widtmode:"+specWideMode+"  heighMode:"+specHeighMode);
+        //setMeasuredDimension(mWidth,mHeight);
+        super.onMeasure(widthMeasureSpec,heightMeasureSpec);
     }
 
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+    }
 
     @Override
     public void notifyDataChanged() {
